@@ -1,0 +1,50 @@
+name:   epicpinball
+version:        "0.6-shareware"
+summary:        Epic Pinball shareware installer
+description:    |
+        Epic Pinball is a collection of pinball games. This will install the shareware version with a single table. Buy the full version at GOG.com.
+confinement:    strict
+grade: stable
+
+apps:
+        epicpinball:
+                command: launcher
+                plugs:  [unity7, pulseaudio, opengl, network]
+
+parts:
+        sdlgui:
+                plugin: autotools
+                source-type:    tar
+                source: https://www.libsdl.org/projects/GUIlib/src/GUIlib-1.2.1.tar.gz
+                configflags: [--prefix=/usr]
+                build-packages:
+                        - gcc
+                        - g++
+                        - make
+                        - libsdl1.2-dev
+        gui:
+                after: [sdlgui]
+                plugin: autotools
+                source: guisrc
+                configflags: [--prefix=/usr]
+                build-packages:
+                        - gcc
+                        - make
+                        - libsdl1.2-dev
+        launch:
+                plugin: dump
+                source: launcher
+                stage-packages:
+                        - wget
+                        - unzip
+                        - libpng12-0
+                        - libsdl1.2debian
+                        - libsdl-net1.2
+                        - libsdl-sound1.2
+                        - libgl1-mesa-glx
+                        - dosbox
+                prime:
+                        - -share
+                        - -usr/share/doc
+                        - -usr/share/lintian
+                        - -usr/share/man

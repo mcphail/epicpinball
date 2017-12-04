@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Epic Pinball
+Exec=epicpinball
+Comment=Shareware version of Epic Pinball
+Type=Application
+Icon=${SNAP}/epicpinball.png
+StartupNotify=true
