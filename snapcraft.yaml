@@ -1,5 +1,5 @@
 name:   epicpinball
-version:        "0.6-shareware"
+version:        "0.7-shareware"
 summary:        Epic Pinball shareware installer
 description:    |
         Epic Pinball is a collection of pinball games. This will install the shareware version with a single table. Buy the full version at GOG.com.
@@ -9,7 +9,7 @@ grade: stable
 apps:
         epicpinball:
                 command: launcher
-                plugs:  [unity7, pulseaudio, opengl, network]
+                plugs:  [unity7, pulseaudio, opengl, networki, x11]
 
 parts:
         sdlgui:
@@ -43,6 +43,7 @@ parts:
                         - libsdl-sound1.2
                         - libgl1-mesa-glx
                         - dosbox
+                        - x11-xserver-utils
                 prime:
                         - -share
                         - -usr/share/doc

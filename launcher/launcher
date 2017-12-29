@@ -85,3 +85,5 @@ else
   echo "Using default configuration"
   dosbox -conf dosbox_distrib.conf
 fi
+
+xrandr -s 0
