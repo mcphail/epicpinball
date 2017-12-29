@@ -9,7 +9,7 @@ grade: stable
 apps:
         epicpinball:
                 command: launcher
-                plugs:  [unity7, pulseaudio, opengl, networki, x11]
+                plugs:  [unity7, pulseaudio, opengl, network, x11]
 
 parts:
         sdlgui:
