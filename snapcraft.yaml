@@ -17,6 +17,10 @@ parts:
                 source-type:    tar
                 source: https://www.libsdl.org/projects/GUIlib/src/GUIlib-1.2.1.tar.gz
                 configflags: [--prefix=/usr]
+                override-build: |
+                  rm config.* configure
+                  ./autogen.sh
+                  snapcraftctl build
                 build-packages:
                         - gcc
                         - g++
@@ -44,6 +48,7 @@ parts:
                         - libgl1-mesa-glx
                         - dosbox
                         - x11-xserver-utils
+                        - libglu1-mesa
                 prime:
                         - -share
                         - -usr/share/doc
