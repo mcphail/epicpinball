@@ -4,4 +4,5 @@ Exec=epicpinball
 Comment=Shareware version of Epic Pinball
 Type=Application
 Icon=${SNAP}/epicpinball.png
+Categories=Game;
 StartupNotify=true
