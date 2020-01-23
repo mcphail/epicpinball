@@ -1,56 +1,58 @@
-name:   epicpinball
-version:        "0.8-shareware"
-summary:        Epic Pinball shareware installer
-description:    |
-        Epic Pinball is a collection of pinball games. This will install the shareware version with a single table. Buy the full version at GOG.com.
-confinement:    strict
+name: epicpinball
+version: "1.0-shareware"
+summary: Epic Pinball shareware installer
+description: |
+  Epic Pinball is a collection of pinball games. This will install the shareware version with a single table. Buy the full version at GOG.com.
+confinement: strict
 grade: stable
+base: core18
 
 apps:
-        epicpinball:
-                command: launcher
-                plugs:  [unity7, pulseaudio, opengl, network, x11]
+  epicpinball:
+    command: desktop-launch $SNAP/launcher
+    plugs:  [unity7, pulseaudio, opengl, network, x11]
+    extensions: [gnome-3-28]
 
 parts:
-        sdlgui:
-                plugin: autotools
-                source-type:    tar
-                source: https://www.libsdl.org/projects/GUIlib/src/GUIlib-1.2.1.tar.gz
-                configflags: [--prefix=/usr]
-                override-build: |
-                  rm config.* configure
-                  ./autogen.sh
-                  snapcraftctl build
-                build-packages:
-                        - gcc
-                        - g++
-                        - make
-                        - libsdl1.2-dev
-        gui:
-                after: [sdlgui]
-                plugin: autotools
-                source: guisrc
-                configflags: [--prefix=/usr]
-                build-packages:
-                        - gcc
-                        - make
-                        - libsdl1.2-dev
-        launch:
-                plugin: dump
-                source: launcher
-                stage-packages:
-                        - wget
-                        - unzip
-                        - libpng12-0
-                        - libsdl1.2debian
-                        - libsdl-net1.2
-                        - libsdl-sound1.2
-                        - libgl1-mesa-glx
-                        - dosbox
-                        - x11-xserver-utils
-                        - libglu1-mesa
-                prime:
-                        - -share
-                        - -usr/share/doc
-                        - -usr/share/lintian
-                        - -usr/share/man
+  launch:
+    after: [ desktop-glib-only ]
+    plugin: dump
+    source: launcher
+    stage-packages:
+      - wget
+      - unzip
+      - yad
+      - perl-base
+    prime:
+      - -share
+      - -usr/share/doc
+      - -usr/share/lintian
+      - -usr/share/man
+
+  dosbox-staging:
+    source: https://github.com/dreamer/dosbox-staging.git
+    plugin: autotools
+    build-packages:
+      - xvfb
+      - libtool
+      - build-essential
+      - libsdl2-dev
+      - libsdl2-net-dev
+      - libncurses-dev
+      - libopusfile-dev
+    stage-packages:
+      - libsdl2-2.0-0
+      - libsdl2-net-2.0-0
+      - libopusfile0
+      - libglu1-mesa
+      - libpng16-16
+
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin
+
