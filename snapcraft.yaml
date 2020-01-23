@@ -46,6 +46,11 @@ parts:
       - libopusfile0
       - libglu1-mesa
       - libpng16-16
+    prime:
+      - -share
+      - -usr/share/doc
+      - -usr/share/lintian
+      - -usr/share/man
 
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
