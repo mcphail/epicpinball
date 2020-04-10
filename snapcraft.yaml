@@ -1,5 +1,5 @@
 name: epicpinball
-version: "1.0-shareware"
+version: "1.1-shareware"
 summary: Epic Pinball shareware installer
 description: |
   Epic Pinball is a collection of pinball games. This will install the shareware version with a single table. Buy the full version at GOG.com.
@@ -9,13 +9,12 @@ base: core18
 
 apps:
   epicpinball:
-    command: desktop-launch $SNAP/launcher
+    command: $SNAP/launcher
     plugs:  [unity7, pulseaudio, opengl, network, x11]
     extensions: [gnome-3-28]
 
 parts:
   launch:
-    after: [ desktop-glib-only ]
     plugin: dump
     source: launcher
     stage-packages:
@@ -51,13 +50,3 @@ parts:
       - -usr/share/doc
       - -usr/share/lintian
       - -usr/share/man
-
-  desktop-glib-only:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: glib-only
-    plugin: make
-    build-packages:
-      - libglib2.0-dev
-    stage-packages:
-      - libglib2.0-bin
-
