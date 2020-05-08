@@ -1,5 +1,5 @@
 name: epicpinball
-version: "1.1-shareware"
+version: "1.2-shareware"
 summary: Epic Pinball shareware installer
 description: |
   Epic Pinball is a collection of pinball games. This will install the shareware version with a single table. Buy the full version at GOG.com.
@@ -50,3 +50,16 @@ parts:
       - -usr/share/doc
       - -usr/share/lintian
       - -usr/share/man
+
+  cleanup:
+    after: [launch, dosbox-staging]
+    plugin: nil
+    build-snaps:
+      - core18
+      - gtk-common-themes
+      - gnome-3-28-1804
+    override-prime: |
+      set -eux
+      for snap in "core18" "gtk-common-themes" "gnome-3-28-1804"; do
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -r "$SNAPCRAFT_PRIME/{}" \;
+      done
