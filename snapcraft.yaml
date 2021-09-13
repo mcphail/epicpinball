@@ -9,8 +9,8 @@ base: core18
 
 apps:
   epicpinball:
-    command: $SNAP/launcher
-    plugs:  [unity7, pulseaudio, opengl, network, x11]
+    command: launcher
+    plugs:  [unity7, audio-playback, opengl, network, x11]
     extensions: [gnome-3-28]
 
 parts:
@@ -30,27 +30,35 @@ parts:
 
   dosbox-staging:
     source: https://github.com/dreamer/dosbox-staging.git
-    plugin: autotools
+    source-branch: release/0.77.x
+    source-type: git
+    plugin: meson
+    meson-parameters:
+      - "setup"
+      - "-Dprefix=/usr"
+      - "-Dbuildtype=release"
+      - "-Duse_fluidsynth=false"
+      - "-Duse_mt32emu=false"
+      - "-Duse_pcap=false"
+      - "-Duse_slirp=false"
+      - "-Duse_sdl2_net=false"
+      - "-Duse_png=false"
     build-packages:
-      - xvfb
-      - libtool
+      - ccache
       - build-essential
+      - libasound2-dev
       - libsdl2-dev
       - libsdl2-net-dev
-      - libncurses-dev
       - libopusfile-dev
     stage-packages:
       - libsdl2-2.0-0
       - libsdl2-net-2.0-0
       - libopusfile0
-      - libglu1-mesa
-      - libpng16-16
     prime:
       - -share
       - -usr/share/doc
       - -usr/share/lintian
       - -usr/share/man
-
   cleanup:
     after: [launch, dosbox-staging]
     plugin: nil
@@ -59,7 +67,6 @@ parts:
       - gtk-common-themes
       - gnome-3-28-1804
     override-prime: |
-      set -eux
       for snap in "core18" "gtk-common-themes" "gnome-3-28-1804"; do
         cd "/snap/$snap/current" && find . -type f,l -exec rm -r "$SNAPCRAFT_PRIME/{}" \;
       done
